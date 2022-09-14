@@ -18,25 +18,43 @@ function Trash() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPage]);
 
+  useEffect(() => {
+    (currPage > numOfPages) && setCurrPage(numOfPages);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [numOfPages]);
+
   function handleRestoreBtn(id) {
-    todoUpdate("/todo/restorefromtrash/" + id, {trash: false}, todos, setTodos, error, setError);
+    todoUpdate("/todo/restorefromtrash/" + id, {trash: false}, currPage, "trash", setTodos, setNumOfPages, error, setError);
   }
 
   return (
     <div className="trash">
-    { (todos.length) > 0 && <PaginationWrapper numOfPages={numOfPages} currPage={currPage} setCurrPage={setCurrPage}/> }
+      <Button type="button" variant="secondary" className="m-3">Empty Trash</Button>
+    { (todos.length > 0) && <PaginationWrapper numOfPages={numOfPages} currPage={currPage} setCurrPage={setCurrPage}/> }
     {
-      (todos.length) > 0 && todos.map(todo => todo.trash && (
+      (todos.length > 0) && todos.map(todo => todo.trash && (
         <Card className="m-3" key={todo.id}>
-          <Card.Header>{todo.title}</Card.Header>
-
+          <Card.Header>
+            <div className="row">
+              <div className="col">
+                <span className="float-start">{new Date(todo.createdAt).toLocaleString("en-GB")}</span>
+              </div>
+              <div className="col">
+                <span className="">{todo.title}</span>
+              </div>
+              <div className="col">
+                <p className="m-0 float-end lh-sm fw-bold">⁞</p>
+              </div>
+            </div>     
+          </Card.Header>
+          
           <Card.Body>
             <Card.Text>{todo.description}</Card.Text>
           </Card.Body>
 
           <Card.Footer className="d-flex justify-content-center align-items-center">
             <ModalWrapper title="Delete">
-              <DeleteForever todos={todos} setTodos={setTodos} id={todo.id}/>
+              <DeleteForever currPage={currPage} setTodos={setTodos} setNumOfPages={setNumOfPages} id={todo.id}/>
             </ModalWrapper>
 
             <Button variant="outline-dark" type="button" onClick={() => handleRestoreBtn(todo.id)}>Restore</Button>
@@ -44,7 +62,7 @@ function Trash() {
         </Card>
       ))
     }
-    { (todos.length) > 0 && <PaginationWrapper numOfPages={numOfPages} currPage={currPage} setCurrPage={setCurrPage}/> }      
+    { (todos.length > 0) && <PaginationWrapper numOfPages={numOfPages} currPage={currPage} setCurrPage={setCurrPage}/> }      
   </div>
   );
 }

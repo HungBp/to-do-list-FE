@@ -3,12 +3,12 @@ import Button from 'react-bootstrap/Button';
 import { todoUpdate } from "../API/todoAPI";
 import { ErrorContext } from "../context/ErrorContextProvider";
 
-function DeleteTemporarily({todos, setTodos, id, handleClose}) {
+function DeleteTemporarily({currPage, filter, setTodos, setNumOfPages, id, handleClose}) {
   const {error, setError} = useContext(ErrorContext);
   const noBtnRef = useRef();
 
   function handleClickYesBtn(id) {
-    todoUpdate("/todo/movetotrash/" + id, {trash: true}, todos, setTodos, error, setError);
+    todoUpdate("/todo/movetotrash/" + id, {trash: true}, currPage, filter, setTodos, setNumOfPages, error, setError);
     noBtnRef.current.click();
   }
 

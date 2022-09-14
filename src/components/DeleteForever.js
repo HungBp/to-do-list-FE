@@ -3,12 +3,13 @@ import Button from 'react-bootstrap/Button';
 import { todoDelete } from "../API/todoAPI";
 import { ErrorContext } from "../context/ErrorContextProvider";
 
-function DeleteForever({todos, setTodos, id, handleClose}) {
+function DeleteForever({currPage, setTodos, setNumOfPages, id, handleClose}) {
   const {error, setError} = useContext(ErrorContext);
   const noBtnRef = useRef();
+  const filter = "trash";
 
   function handleClickYesBtn(id) {
-    todoDelete("/todo/delete/" + id, todos, setTodos, error, setError);
+    todoDelete("/todo/delete/" + id, currPage, filter, setTodos, setNumOfPages, error, setError);
     noBtnRef.current.click();
   }
 

@@ -1,11 +1,11 @@
 import axios from "axios";
 
 // create new todo
-function todoCreate(url, data, todos, setTodos, error, setError) {
+function todoCreate(url, data, currPage, filter, setTodos, setNumOfPages, error, setError) {
   axios.post(url, data)
     .then(res => {
       if (res.statusText === "OK") {
-        setTodos([res.data, ...todos]);
+        todoRead(`todo/${filter}/${currPage}`, setTodos, setNumOfPages, error, setError);
       }
     })
     .catch(err => {
@@ -30,17 +30,11 @@ function todoRead(url, setTodos, setNumOfPages, error, setError) {
 }
 
 // update todo
-// filter arg is used for handling completed change only
-function todoUpdate(url, data, todos, setTodos, error, setError, filter = "none") {
+function todoUpdate(url, data, currPage, filter, setTodos, setNumOfPages, error, setError) {
   axios.patch(url, data)
     .then(res => {
       if (res.statusText === "OK") {
-        setTodos(todos => todos.map(todo => (todo.id === res.data.id) ? {...todo, ...res.data} : todo));
-        if (filter === "completed") {
-          setTodos(todos => todos.filter(todo => todo.completed === true));
-        } else if (filter === "pending") {
-          setTodos(todos => todos.filter(todo => todo.completed === false));
-        }
+        todoRead(`todo/${filter}/${currPage}`, setTodos, setNumOfPages, error, setError);
       }
     })
     .catch(err => {
@@ -50,11 +44,11 @@ function todoUpdate(url, data, todos, setTodos, error, setError, filter = "none"
 }
 
 // delete todo
-function todoDelete(url, todos, setTodos, error, setError) {
+function todoDelete(url, currPage, filter, setTodos, setNumOfPages, error, setError) {
   axios.delete(url)
     .then(res => {
       if (res.statusText === "OK") {
-        setTodos(todos.filter(todo => (todo.id !== res.data.id)));
+        todoRead(`todo/${filter}/${currPage}`, setTodos, setNumOfPages, error, setError);
       }
     })
     .catch(err => {

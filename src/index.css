@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.dropdown-toggle {
+  font-weight: bold;
+  padding: 0;
+  border: none;
+  vertical-align: top;
+}
+
+.dropdown-toggle.btn:hover {
+  background-color: initial;
+  color: initial;
+}
+
+.dropdown-toggle.btn:focus {
+  background-color: initial;
+  color: initial;
+  box-shadow: initial;
+}
+
+.dropdown-toggle::after {
+  content: none;
+}

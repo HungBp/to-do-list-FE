@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { ErrorContext } from "../context/ErrorContextProvider";
 import { todoUpdate } from "../API/todoAPI";
 
-function Edit({todos, setTodos, todo, handleClose}) {
+function Edit({currPage, filter, setTodos, setNumOfPages, todo, handleClose}) {
   const [title, setTitle] = useState(todo.title);
   const [description, setDescription] = useState(todo.description);
   const {error, setError} = useContext(ErrorContext);
@@ -12,7 +12,7 @@ function Edit({todos, setTodos, todo, handleClose}) {
 
   function handleSaveBtn(e, id) {
     e.preventDefault();
-    todoUpdate("/todo/edit/" + id, {title, description}, todos, setTodos, error, setError);
+    todoUpdate("/todo/edit/" + id, {title, description}, currPage, filter, setTodos, setNumOfPages, error, setError);
     cancelBtnRef.current.click();
   }
   
